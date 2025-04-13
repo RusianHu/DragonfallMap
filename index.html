@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>坠龙地图 - 记录中国古今坠龙事件</title>
+    <meta name="description" content="坠龙地图是一个记录从古代到近现代中国坠龙事件的交互式地图网站，使用高德地图API，采用bilibili二次元风格设计。">
+    <meta name="keywords" content="坠龙,龙,中国龙,坠龙事件,历史事件,地图,高德地图,二次元">
+    <meta name="author" content="坠龙地图团队">
+
+    <!-- 网站图标 -->
+    <link rel="icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="images/dragon-illustration.jpg">
+
+    <!-- PWA支持 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FB7299">
+
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/bilibili-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- 高德地图API -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=144484508aa31f6a020e34cdb5b60835"></script>
+</head>
+<body>
+    <!-- 装饰元素 -->
+    <div class="page-decoration decoration-top-right"></div>
+    <div class="page-decoration decoration-bottom-left"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#FB7299"/>
+                    <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm2.5 9.5L12 13l-2.5 2.5.5-3.5-2.5-2.5 3.5-.5 1.5-3 1.5 3 3.5.5-2.5 2.5.5 3.5z" fill="#FB7299"/>
+                </svg>
+                <h1>坠龙地图</h1>
+            </div>
+
+            <!-- 汉堡菜单按钮 -->
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#" class="active" data-section="map">地图</a></li>
+                    <li><a href="#" data-section="events">事件列表</a></li>
+                    <li><a href="#" data-section="about">关于坠龙</a></li>
+                    <li><a href="#" data-section="guide">追龙指南</a></li>
+                    <li><a href="#" data-section="submit">提交事件</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="map-section" class="active-section">
+                <div class="map-container">
+                    <div id="map"></div>
+                    <div class="map-controls">
+                        <div class="time-slider">
+                            <span>时间筛选：</span>
+                            <input type="range" id="time-slider" min="0" max="100" value="100">
+                            <span id="time-display">全部时期</span>
+                        </div>
+                        <div class="map-filter">
+                            <button id="filter-all" class="active">全部</button>
+                            <button id="filter-ancient">古代</button>
+                            <button id="filter-modern">近现代</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="event-detail" id="event-detail">
+                    <div class="close-btn">&times;</div>
+                    <h2 id="event-title">事件详情</h2>
+                    <div class="event-info">
+                        <p id="event-time"></p>
+                        <p id="event-location"></p>
+                        <p id="event-description"></p>
+                    </div>
+                    <div class="event-image">
+                        <img id="event-image" src="" alt="">
+                    </div>
+                </div>
+            </section>
+
+            <section id="events-section">
+                <h2>坠龙事件列表</h2>
+                <div class="filter-bar">
+                    <input type="text" id="search-events" placeholder="搜索事件...">
+                    <select id="sort-events">
+                        <option value="time-asc">时间 (最早-最近)</option>
+                        <option value="time-desc">时间 (最近-最早)</option>
+                        <option value="location">地点</option>
+                    </select>
+                </div>
+                <div class="events-list" id="events-list">
+                    <!-- 事件列表将通过JavaScript动态生成 -->
+                </div>
+            </section>
+
+            <section id="about-section">
+                <h2>关于坠龙</h2>
+                <div class="about-content">
+                    <div class="about-image">
+                        <img src="images/dragon-illustration.jpg" alt="中国龙的艺术表现">
+                    </div>
+                    <div class="about-text">
+                        <h3>龙在中国文化中的地位</h3>
+                        <p>龙是中国传统文化中最重要的神兽之一，象征着权力、尊贵和吉祥。在中国古代，龙被视为帝王的象征，五爪金龙更是皇帝专用的图腾。</p>
+
+                        <h3>坠龙事件的历史记载</h3>
+                        <p>从夏朝开始，中国历史文献中就有关于龙的记载。《史记》中记录了夏朝时期天降二龙的事件。此后的历朝历代，都有关于龙出现或坠落的记载。</p>
+
+                        <h3>现代视角下的坠龙事件</h3>
+                        <p>从现代科学角度看，许多坠龙事件可能是对自然现象的误解，或是对某些大型动物遗骸的错误解读。然而，这些事件在文化和历史层面上仍然具有重要意义。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="guide-section">
+                <h2>追龙指南</h2>
+                <div class="guide-content">
+                    <div class="guide-intro">
+                        <p>基于对上述传说的分析，我们可以完全依据这些民间叙事的内在逻辑，尝试勾勒出可能与"找到"龙相关的条件、地点和方法。需要再次强调，以下内容是对传说模式的归纳总结，而非现实世界的行动指南。</p>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>传说中指示的环境因素：</h3>
+
+                        <div class="guide-item">
+                            <h4>地点选择：</h4>
+                            <ul>
+                                <li>
+                                    <strong>靠近重要水体：</strong> 大江大河的入海口、河段弯道、深潭（如江河、湖江），大型湖泊，海岸线附近，传说中的龙井或泉眼，甚至人工水果和沼泽湿地，水草龙的基本领域。
+                                </li>
+                                <li>
+                                    <strong>山脉与洞穴：</strong> 特别是那些有龙传说或被认为是龙穴的山区。高峻入云的山峰，在神话中常被视为连接天地的桥梁，可能是龙升降或坠落的场所。
+                                </li>
+                                <li>
+                                    <strong>偏远荒野：</strong> 人迹罕至、自然力量强大的荒野地带，这些地方本身就容易成为神秘生物传说的发生地。
+                                </li>
+                                <li>
+                                    <strong>历史遗迹点：</strong> 曾发生过龙目击、坠落事件或发现过"龙骨"的地点，在传说逻辑中可能会再次出现类似事件。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="guide-item">
+                            <h4>天气条件：</h4>
+                            <ul>
+                                <li>
+                                    <strong>极端天气期间或之后：</strong> 暴雨、雷电交加的夜晚、洪水泛滥时、台风过后，这些时刻自然秩序被打乱，被认为是神异现象更容易发生的时机。
+                                </li>
+                                <li>
+                                    <strong>气候反常期：</strong> 如久旱突雨或连日阴雨之时，人们可能会举行祈雨或驱灾仪式，这在传说中是与龙互动的时刻。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="guide-item">
+                            <h4>特定时间：</h4>
+                            <ul>
+                                <li>
+                                    <strong>是否有特定日期被提及：</strong>（如雪口事件集中在7、8月，天津在7月），但更普遍的是与自然节律相关的特殊时期。例如，农历二月初二"龙抬头"，被认为是龙结束冬眠，开始活动的日子。
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>传说中可能的触发方式或迹象：</h3>
+
+                        <div class="guide-item">
+                            <h4>混乱中的现象：</h4> 在恶劣天气或自然灾害（如洪水）期间或之后，伴有现象，传说认为此时更容易目睹因环境变化而现形或受困的龙。
+                        </div>
+
+                        <div class="guide-item">
+                            <h4>仪式性行为：</h4> 举行与祈雨、祭水、安抚龙王相关的传统仪式，献上祭品（仅管在英雄故事中常被描绘为恶龙的要求），这些行为在传说中是与龙建立联系或进行沟通的方式。
+                        </div>
+
+                        <div class="guide-item">
+                            <h4>意外的发现：</h4> 偶然在特定地点（尤其是星火边、山中或地下）发现奇特的鳞甲、巨大的骨片或其他异常物品，并将其解读为龙的遗留物，工程建设或挖掘有时会令此类发现。
+                        </div>
+
+                        <div class="guide-item">
+                            <h4>留意异常迹象：</h4> 对反常的自然现象保持敏感，如奇怪的声响、动物异常行为、特殊的气味、不明光影等，这些在传说中可能被视为龙出现的前兆或伴随现象。
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="submit-section">
+                <h2>提交坠龙事件</h2>
+                <p class="submit-intro">如果您知道或听说过未被记录的坠龙事件，欢迎提交给我们。我们会在审核后将其添加到地图中。</p>
+                <form id="submit-form" action="api/submit_event.php" method="post">
+                    <div class="form-group">
+                        <label for="event-name">事件名称</label>
+                        <input type="text" id="event-name" name="event_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-date">发生日期</label>
+                        <input type="date" id="event-date" name="event_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-dynasty">朝代/年代</label>
+                        <input type="text" id="event-dynasty" name="event_dynasty">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-location-name">地点名称</label>
+                        <input type="text" id="event-location-name" name="event_location_name" required>
+                    </div>
+                    <div class="form-group map-picker">
+                        <label>在地图上选择位置</label>
+                        <div id="submit-map"></div>
+                        <input type="hidden" id="event-lat" name="event_lat">
+                        <input type="hidden" id="event-lng" name="event_lng">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-desc">事件描述</label>
+                        <textarea id="event-desc" name="event_desc" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-source">信息来源</label>
+                        <input type="text" id="event-source" name="event_source">
+                    </div>
+                    <div class="form-group">
+                        <label for="submitter-name">您的姓名</label>
+                        <input type="text" id="submitter-name" name="submitter_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="submitter-contact">联系方式</label>
+                        <input type="text" id="submitter-contact" name="submitter_contact">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">提交事件</button>
+                        <button type="reset" class="btn-reset">重置表单</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+
+        <!-- 追龙指南区域 - 页脚上方 -->
+        <div id="guide-summary-section" class="dragon-guide-section">
+            <div class="container">
+                <h4>追龙指南</h4>
+                <div class="dragon-guide-content">
+                    <div class="dragon-guide-item">
+                        <i class="guide-icon location-icon"></i>
+                        <p>寻找古老传说中提到的龙出没地点，如深山、湖泊、洞穴</p>
+                    </div>
+                    <div class="dragon-guide-item">
+                        <i class="guide-icon time-icon"></i>
+                        <p>选择雷雨天气或农历初一、十五等特殊日期前往</p>
+                    </div>
+                    <div class="dragon-guide-item">
+                        <i class="guide-icon method-icon"></i>
+                        <p>携带传统祭品，保持虔诚心态，遵循古籍记载的仪式</p>
+                    </div>
+                    <a href="javascript:void(0)" onclick="scrollToGuide()" class="guide-more-link">查看完整指南 <span class="arrow-right">→</span></a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer-wave-container">
+            <!-- 顶部波浪装饰 -->
+            <div class="footer-wave">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
+                    <path fill="#252A37" fill-opacity="1" d="M0,32L60,42.7C120,53,240,75,360,74.7C480,75,600,53,720,42.7C840,32,960,32,1080,37.3C1200,43,1320,53,1380,58.7L1440,64L1440,100L1380,100C1320,100,1200,100,1080,100C960,100,840,100,720,100C600,100,480,100,360,100C240,100,120,100,60,100L0,100Z"></path>
+                </svg>
+            </div>
+
+            <div class="footer-content">
+                <div class="footer-main">
+                    <div class="footer-logo">
+                        <div class="logo-container">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-float">
+                                <circle cx="20" cy="20" r="18" stroke="#FB7299" stroke-width="2" fill="none"/>
+                                <path d="M20 10C15.0294 10 11 14.0294 11 19C11 23.9706 15.0294 28 20 28C24.9706 28 29 23.9706 29 19C29 14.0294 24.9706 10 20 10ZM24.1667 25.8333L20 21.6667L15.8333 25.8333L16.6667 20.8333L12.5 17.5L17.5 16.6667L20 12L22.5 16.6667L27.5 17.5L23.3333 20.8333L24.1667 25.8333Z" fill="#FB7299"/>
+                            </svg>
+                            <h3 class="animate-bilibili">坠龙地图</h3>
+                        </div>
+                        <p class="copyright">&copy; 2023-<script>document.write(new Date().getFullYear())</script> 坠龙地图团队</p>
+                    </div>
+
+                    <div class="footer-nav">
+                        <div class="footer-links">
+                            <h4>快速导航</h4>
+                            <ul>
+                                <li><a href="#" data-section="map" class="footer-link">地图</a></li>
+                                <li><a href="#" data-section="events" class="footer-link">事件列表</a></li>
+                                <li><a href="#" data-section="about" class="footer-link">关于坠龙</a></li>
+                                <li><a href="#" data-section="guide" class="footer-link">追龙指南</a></li>
+                                <li><a href="#" data-section="submit" class="footer-link">提交事件</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-contact">
+                            <h4>联系我们</h4>
+                            <p><i class="contact-icon email-icon"></i>contact@dragonfallmap.com</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link" title="微博">
+                                    <i class="bilibili-icon weibo"></i>
+                                </a>
+                                <a href="#" class="social-link" title="微信">
+                                    <i class="bilibili-icon wechat"></i>
+                                </a>
+                                <a href="https://www.bilibili.com" target="_blank" class="social-link" title="哔哩哔哩">
+                                    <i class="bilibili-icon bilibili"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>本网站仅供学术研究和文化传播使用，所有坠龙事件记录均来自历史文献和民间传说。</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 鼠标跟随效果 -->
+    <div class="cursor-effect" id="cursor-effect"></div>
+
+    <script src="js/image-handler.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- PWA Service Worker 注册 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                    console.log('ServiceWorker 注册成功: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker 注册失败: ', err);
+                });
+            });
+        }
+    </script>
+
+    <!-- 移动端菜单切换脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const mainNav = document.getElementById('main-nav');
+
+            if (menuToggle && mainNav) {
+                menuToggle.addEventListener('click', function() {
+                    menuToggle.classList.toggle('active');
+                    mainNav.classList.toggle('active');
+                });
+
+                // 点击菜单项时关闭菜单
+                const navLinks = mainNav.querySelectorAll('a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        menuToggle.classList.remove('active');
+                        mainNav.classList.remove('active');
+                    });
+                });
+            }
+
+            // 鼠标跟随效果
+            const cursorEffect = document.getElementById('cursor-effect');
+            if (cursorEffect) {
+                document.addEventListener('mousemove', function(e) {
+                    // 只在非触摸设备上显示
+                    if (window.matchMedia("(pointer: fine)").matches) {
+                        cursorEffect.style.display = 'block';
+                        cursorEffect.style.left = e.clientX + 'px';
+                        cursorEffect.style.top = e.clientY + 'px';
+                    } else {
+                        cursorEffect.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

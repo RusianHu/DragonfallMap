@@ -1,0 +1,62 @@
+# 坠龙地图 - 安装说明
+
+## 环境要求
+
+1. PHP 7.4或更高版本
+2. Web服务器（Apache、Nginx或PHP内置服务器）
+3. 现代浏览器（Chrome、Firefox、Edge等）
+
+## PHP安装说明
+
+### Windows系统
+
+1. 访问PHP官方网站下载页面：https://windows.php.net/download/
+2. 下载PHP 7.4或更高版本的ZIP包（推荐使用Thread Safe版本）
+3. 解压到指定目录，例如：C:\php
+4. 将PHP目录添加到系统环境变量PATH中
+   - 右键点击"此电脑"，选择"属性"
+   - 点击"高级系统设置"
+   - 点击"环境变量"
+   - 在"系统变量"中找到"Path"，点击"编辑"
+   - 点击"新建"，添加PHP目录路径（例如：C:\php）
+   - 点击"确定"保存设置
+5. 复制php.ini-development为php.ini
+6. 编辑php.ini文件，取消以下扩展的注释：
+   - extension=curl
+   - extension=fileinfo
+   - extension=gd
+   - extension=mbstring
+   - extension=openssl
+   - extension=pdo_mysql
+   - extension=pdo_sqlite
+
+### 验证PHP安装
+
+1. 打开命令提示符或PowerShell
+2. 输入命令：php -v
+3. 如果显示PHP版本信息，则安装成功
+
+## 运行坠龙地图网站
+
+### 使用PHP内置服务器（推荐开发环境使用）
+
+1. 双击运行start_php_server.bat文件
+   - 如果出现错误，请确保PHP已正确安装并添加到PATH环境变量
+2. 在浏览器中访问：http://localhost:8080
+
+### 使用Apache或Nginx（推荐生产环境使用）
+
+1. 将网站文件复制到Web服务器的根目录
+2. 配置Web服务器指向网站目录
+3. 确保PHP已正确配置
+4. 访问对应的URL
+
+## 常见问题
+
+1. 如果地图无法显示，请检查网络连接和高德地图API密钥是否有效
+2. 如果提交事件失败，请检查data目录是否有写入权限
+3. 如果图片无法显示，请检查images目录是否存在并有正确的权限
+
+## 联系方式
+
+如有任何问题，请发送邮件至：contact@dragonfallmap.com

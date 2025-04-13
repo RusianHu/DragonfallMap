@@ -1,0 +1,16 @@
+{
+  "name": "坠龙地图",
+  "short_name": "坠龙地图",
+  "description": "记录从古代到近现代的坠龙事件",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f1f2f6",
+  "theme_color": "#ff6b81",
+  "icons": [
+    {
+      "src": "images/dragon-illustration.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    }
+  ]
+}
