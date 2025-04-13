@@ -1073,6 +1073,7 @@ h2 {
         display: flex;
     }
 
+    /* 改进的移动端导航菜单 */
     nav {
         position: fixed;
         top: 0;
@@ -1086,6 +1087,26 @@ h2 {
         z-index: 150;
         padding: 80px 20px 20px;
         overflow-y: auto;
+    }
+
+    /* 添加遮罩层 */
+    nav::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
+
+    nav.active::before {
+        opacity: 1;
+        visibility: visible;
     }
 
     nav.active {
@@ -1104,8 +1125,18 @@ h2 {
 
     nav ul li a {
         display: block;
-        padding: 12px 15px;
+        padding: 15px;
         width: 100%;
+        font-size: 16px;
+        border-radius: var(--border-radius);
+        text-align: center;
+        transition: all 0.2s ease;
+    }
+
+    nav ul li a:active {
+        background-color: var(--primary-color);
+        color: var(--light-text);
+        transform: scale(0.98);
     }
 
     .logo h1 {
@@ -1115,11 +1146,14 @@ h2 {
     .map-container {
         height: 350px;
         margin-top: 15px;
+        border-width: 1px;
     }
 
     .map-controls {
-        width: calc(100% - 30px);
-        padding: 12px;
+        width: calc(100% - 20px);
+        padding: 10px;
+        left: 10px;
+        bottom: 10px;
     }
 
     .time-slider {
@@ -1129,21 +1163,48 @@ h2 {
 
     .time-slider input {
         width: 100%;
-        margin: 10px 0;
+        margin: 8px 0;
+        height: 20px;
+    }
+
+    .time-slider span {
+        font-size: 13px;
     }
 
     .map-filter {
         flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 8px;
     }
 
     .map-filter button {
-        font-size: 13px;
-        padding: 8px 12px;
+        font-size: 12px;
+        padding: 6px 10px;
+        flex: 1;
+        margin: 0 2px;
+        min-width: 60px;
     }
 
+    /* 优化事件详情弹窗 */
     .event-detail {
-        width: 95%;
-        padding: 20px 15px;
+        width: 92%;
+        padding: 15px 12px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .event-detail h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        padding-right: 25px; /* 为关闭按钮留出空间 */
+    }
+
+    .close-btn {
+        top: 8px;
+        right: 8px;
+        width: 25px;
+        height: 25px;
+        font-size: 20px;
     }
 
     .events-list {
@@ -1164,82 +1225,183 @@ h2 {
         width: 100%;
     }
 
+    /* 页脚移动端优化 */
     .footer-wave-container {
         padding: 40px 0 20px;
     }
 
     .footer-wave {
-        top: -50px;
-        height: 50px;
+        top: -40px;
+        height: 40px;
     }
 
     .footer-wave svg {
-        height: 50px;
+        height: 40px;
     }
 
     .footer-main {
         flex-direction: column;
-        gap: 20px;
+        gap: 25px;
+        text-align: center;
     }
 
     .footer-nav {
         flex-direction: column;
-        gap: 30px;
+        gap: 25px;
+    }
+
+    .footer-logo {
+        margin: 0 auto;
+    }
+
+    .logo-container {
+        justify-content: center;
+        margin-bottom: 10px;
     }
 
     .logo-container h3 {
         font-size: 20px;
     }
 
+    .copyright {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .footer-links h4 {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .footer-links ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .footer-links ul li {
+        margin: 0;
+    }
+
+    .footer-links ul li a {
+        padding: 8px 12px;
+        display: inline-block;
+    }
+
     .footer-links h4::after,
     .footer-contact h4::after {
         width: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .footer-bottom {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.5;
     }
 }
 
 /* 小屏幕设备 */
 @media (max-width: 480px) {
     h2 {
-        font-size: 24px;
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    h3 {
+        font-size: 18px;
     }
 
     .map-container {
-        height: 300px;
+        height: 280px;
     }
 
     .event-card-image {
         height: 150px;
     }
 
-    .event-detail {
+    /* 优化追龙指南内容 */
+    .guide-content {
         padding: 15px 12px;
+    }
+
+    .guide-section {
+        margin-bottom: 20px;
+    }
+
+    .guide-item {
+        padding: 12px 10px;
+        margin-bottom: 12px;
+    }
+
+    .guide-item ul li {
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .guide-item ul li strong {
+        display: block;
+        margin-bottom: 3px;
     }
 
     /* 小屏幕追龙指南区域 */
     .dragon-guide-section {
-        padding: 25px 0;
+        padding: 20px 0;
     }
 
     .dragon-guide-section h4 {
         font-size: 18px;
+        margin-bottom: 15px;
     }
 
     .dragon-guide-item {
         padding: 10px;
+        margin-bottom: 10px;
     }
 
     .dragon-guide-item p {
         font-size: 13px;
+        line-height: 1.4;
     }
 
     .guide-icon {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
     }
 
     .guide-more-link {
         font-size: 13px;
-        padding: 6px 12px;
+        padding: 8px 15px;
+        margin-top: 5px;
+        border-radius: 20px;
+    }
+
+    /* 关于坐龙部分移动端优化 */
+    .about-content {
+        flex-direction: column;
+    }
+
+    .about-image {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .about-text {
+        width: 100%;
+    }
+
+    .about-text h3 {
+        margin-top: 15px;
+        font-size: 17px;
+    }
+
+    .about-text p {
+        font-size: 14px;
+        margin-bottom: 12px;
     }
 }
 
@@ -1277,6 +1439,71 @@ h2 {
 
 .animate__fadeInDown {
     animation-name: fadeInDown;
+}
+
+/* 移动端菜单遮罩层 */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 120;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 防止菜单打开时背景滚动 */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* 触摸友好的交互元素 */
+@media (hover: none) and (pointer: coarse) {
+    /* 针对触摸设备的样式 */
+    button, a, .close-btn, .menu-toggle, .event-card {
+        -webkit-tap-highlight-color: transparent; /* 移除点击高亮 */
+    }
+
+    button:active, a:active, .close-btn:active {
+        transform: scale(0.97);
+    }
+
+    .event-card:active {
+        transform: scale(0.98);
+    }
+
+    /* 增大点击区域 */
+    nav ul li a, .footer-links a, .guide-more-link {
+        padding: 12px 15px;
+        margin: 2px 0;
+    }
+
+    .map-filter button {
+        min-height: 40px;
+    }
+
+    .close-btn {
+        min-width: 35px;
+        min-height: 35px;
+    }
+
+    /* 表单元素触摸优化 */
+    input, select, textarea, button[type="submit"], button[type="reset"] {
+        font-size: 16px; /* 防止iOS自动缩放 */
+        min-height: 44px;
+    }
+
+    textarea {
+        min-height: 100px;
+    }
 }
 
 /* 二次元风格元素 */

@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>坠龙地图 - 记录中国古今坠龙事件</title>
     <meta name="description" content="坠龙地图是一个记录从古代到近现代中国坠龙事件的交互式地图网站，使用高德地图API，采用bilibili二次元风格设计。">
     <meta name="keywords" content="坠龙,龙,中国龙,坠龙事件,历史事件,地图,高德地图,二次元">
@@ -335,21 +338,47 @@
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menu-toggle');
             const mainNav = document.getElementById('main-nav');
+            const body = document.body;
 
             if (menuToggle && mainNav) {
+                // 添加遮罩层
+                const overlay = document.createElement('div');
+                overlay.className = 'mobile-menu-overlay';
+                document.body.appendChild(overlay);
+
+                // 点击汉堡菜单按钮切换菜单
                 menuToggle.addEventListener('click', function() {
-                    menuToggle.classList.toggle('active');
-                    mainNav.classList.toggle('active');
+                    toggleMenu();
+                });
+
+                // 点击遮罩层关闭菜单
+                overlay.addEventListener('click', function() {
+                    closeMenu();
                 });
 
                 // 点击菜单项时关闭菜单
                 const navLinks = mainNav.querySelectorAll('a');
                 navLinks.forEach(link => {
                     link.addEventListener('click', function() {
-                        menuToggle.classList.remove('active');
-                        mainNav.classList.remove('active');
+                        closeMenu();
                     });
                 });
+
+                // 切换菜单状态
+                function toggleMenu() {
+                    menuToggle.classList.toggle('active');
+                    mainNav.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                    body.classList.toggle('menu-open'); // 防止背景滚动
+                }
+
+                // 关闭菜单
+                function closeMenu() {
+                    menuToggle.classList.remove('active');
+                    mainNav.classList.remove('active');
+                    overlay.classList.remove('active');
+                    body.classList.remove('menu-open');
+                }
             }
 
             // 鼠标跟随效果
