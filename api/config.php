@@ -6,8 +6,8 @@ define('DB_PASS', '');
 define('DB_NAME', 'dragonfall_map');
 
 // 高德地图API配置
-define('AMAP_KEY', '144484508aa31f6a020e34cdb5b60835');
-define('AMAP_SECRET', 'e45529d33d9356e6e7acef5504ec90f5');
+define('AMAP_KEY', 'API Key');
+define('AMAP_SECRET', 'API 密钥');
 
 // 文件路径配置
 define('DATA_FILE', __DIR__ . '/../data/dragon_events.json');
