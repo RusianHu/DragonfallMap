@@ -28,12 +28,27 @@ function initNavigation() {
     const allLinks = [...navLinks, ...footerLinks];
     const menuToggle = document.getElementById('menu-toggle');
     const mainNav = document.getElementById('main-nav');
-
-    // 初始化汉堡菜单
+    
     if (menuToggle && mainNav) {
+        // 点击汉堡菜单按钮切换菜单
         menuToggle.addEventListener('click', function() {
             menuToggle.classList.toggle('active');
             mainNav.classList.toggle('active');
+            
+            // 防止滚动 - 当菜单打开时
+            document.body.style.overflow = menuToggle.classList.contains('active') ? 'hidden' : '';
+        });
+        
+        // 点击页面任何地方关闭菜单（委托到document）
+        document.addEventListener('click', function(e) {
+            // 如果点击的不是菜单内部元素，也不是菜单按钮，则关闭菜单
+            if (mainNav.classList.contains('active') && 
+                !mainNav.contains(e.target) && 
+                !menuToggle.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                mainNav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
     }
 
@@ -52,6 +67,13 @@ function initNavigation() {
                     navLink.classList.remove('active');
                 }
             });
+            
+            // 在移动端视图下，点击导航链接后关闭菜单
+            if (window.innerWidth <= 768 && menuToggle && mainNav) {
+                menuToggle.classList.remove('active');
+                mainNav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
 
             // 处理特殊部分：追龙指南
             if (targetSection === 'guide') {
